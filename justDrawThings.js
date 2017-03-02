@@ -42,8 +42,8 @@ let calcVectorCoordinates = (v) =>{
 
 let drawVectorsFromOrigin = (vectors, origin, ctx) => {
   vectors.map(v => {
-    let pointOfVectorLine = calcVectorCoordinates(v);
-    let endV = relativePoint(origin, pointOfVectorLine);
+    //only calculate once
+    let endV = relativePoint(origin, calcVectorCoordinates(v));
     drawLine(origin, endV, ctx, "green");
     drawPoint(v.coords, endV, ctx);
   });
@@ -59,7 +59,6 @@ let drawPoint = (p, scaled, ctx) => {
   ctx.fillRect(scaled.x, scaled.y, 3, 3);
   ctx.lineWidth = 1;
   if(p !== undefined){
-
     ctx.strokeText('(' + p.x + ', ' + p.y + ')', scaled.x + 10, scaled.y + 10);
     ctx.closePath();
   }
