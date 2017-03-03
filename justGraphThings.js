@@ -1,40 +1,54 @@
 
 //tick marks for graph
-let drawTicks = (canvas, x, y, ctx, direction) => {
-
+//ticks options, used to collect lines for drawing
+let drawTicks = (canvas, x, y, direction, ticks) => {
+  if(ticks === undefined) ticks = [];
   if(direction === 'y' && y < canvas.height){
-    drawLine(cartesian2dCoordinate(x + 5, y),
-            cartesian2dCoordinate(x - 5, y), ctx);
-    drawTicks(canvas,x,y+10,ctx,direction);
+    let name = direction + ticks.length;
+    let line = lineObject([x + 5, y],[x - 5, y])
+    ticks.push({
+      [name]: {
+        from: line.from,
+        to: line.to,
+        color: 'black'
+      }
+    });
+    drawTicks(canvas,x,y+10,direction, ticks);
+  } else if(direction === 'x' && x < canvas.width){
+    let name = direction + ticks.length;
+    let line = lineObject([x, y + 5],[x, y - 5])
+    ticks.push({
+      [name]: {
+        from: line.from,
+        to: line.to,
+        color: 'black'
+      }
+    })
+    drawTicks(canvas,x+10, y, direction, ticks);
   }
-
-  if(direction === 'x' && x < canvas.width){
-    drawLine(cartesian2dCoordinate(x, y + 5),
-            cartesian2dCoordinate(x, y - 5), ctx);
-    drawTicks(canvas,x+10, y, ctx, direction);
-  }
+  return flattenArrayToObject(ticks);
 }
 
 //draw 2d graph
-let drawGraph = (canvas, origin, ctx) => {
-  //x axis
-  drawLine(cartesian2dCoordinate(0, origin.y),
-          cartesian2dCoordinate(canvas.width, origin.y),
-          ctx,
-          "black");
-  drawTicks(canvas, 0, origin.y, ctx, 'x');
-  //y axis
-  drawLine(cartesian2dCoordinate(origin.x, 0),
-          cartesian2dCoordinate(origin.x, canvas.height),
-          ctx,
-          "black");
-  drawTicks(canvas, origin.x, 0, ctx, 'y');
+let initGraph = (origin) => {
+  let x = lineObject([origin.x, 0],[origin.x, canvas.height]);
+  let y = lineObject([0, origin.y],[canvas.width, origin.y]);
+  return {
+    x:{
+      from: x.from,
+      to: x.to,
+      ticks:cartesian2dCoordinate(0, origin.y)
+    }, y: {
+      from: y.from,
+      to: y.to,
+      ticks: cartesian2dCoordinate(origin.x,0)
+    }
+  }
 }
 
 //plot points on graph
 let plotPoints = (origin, points, ctx)=>{
   points.map((point) => {
-
     let scaled = relativePoint(origin,
           cartesian2dCoordinate(scale(point.x), scale(point.y)));
 

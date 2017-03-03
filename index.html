@@ -4,9 +4,10 @@
     <script src="./justDrawThings.js"></script>
     <script src="./justGraphThings.js"></script>
     <script src="./justTestThings.js"></script>
+    <script src="./justMain.js"></script>
     <script>
       //i need a functional lesson...
-      //if you look at justDraw/justGraph things', they appear to be stacks of commands
+      //if you look at justDraw/justGraph-things'.js, they appear to be stacks of commands
       //is there a way to create functional graphical apis?
       //do functional graphical apis already exist? How does it work?
       //how would one work if it doesn't exist already?
@@ -23,22 +24,17 @@
       //
       //  if(event): newState.push(newBlock)
       //  if(notEOF): draw(newState);
-
+      //  else
       //Can someone splain me plz?
 
-      let main = () => {
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
-        let origin = (cartesian2dCoordinate(canvas.width/2, canvas.height/2));
 
-        testAllTheThings(origin, canvas, ctx);
-      }
       window.onload = main;
-
     </script>
   </head>
   <body>
     <h1>Just Math Things</h1>
     <canvas id="canvas" width="480" height="300"></canvas>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
   </body>
 </html>
